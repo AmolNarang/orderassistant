@@ -1,0 +1,121 @@
+{
+  "beac2a9a-f860-4984-a8a8-26fe4e95ecfc": {
+    "name": "Hi",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hi"
+      },
+      {
+        "role": "assistant",
+        "content": "Hi there! How can I help you today?"
+      },
+      {
+        "role": "user",
+        "content": "please check status of my orders"
+      },
+      {
+        "role": "assistant",
+        "content": "I can help with that! To check the status of your orders, could you please provide your email address?"
+      },
+      {
+        "role": "user",
+        "content": "tina@example.com"
+      },
+      {
+        "role": "assistant",
+        "content": "Thanks! I can list all the orders associated with tina@example.com. Would you like me to do that?"
+      },
+      {
+        "role": "user",
+        "content": "yes"
+      },
+      {
+        "role": "assistant",
+        "content": "I'm sorry, but I couldn't find any orders associated with that email address. Are you sure that's the correct email?"
+      },
+      {
+        "role": "user",
+        "content": "hey"
+      },
+      {
+        "role": "assistant",
+        "content": "\u274c Error connecting to API: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7e69ad39b280>: Failed to establish a new connection: [Errno 111] Connection refused'))"
+      },
+      {
+        "role": "user",
+        "content": "hey"
+      },
+      {
+        "role": "assistant",
+        "content": "\u274c Error connecting to API: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=30)"
+      },
+      {
+        "role": "user",
+        "content": "hey"
+      },
+      {
+        "role": "assistant",
+        "content": "Hi Tina! Let me know how I can help you today."
+      },
+      {
+        "role": "user",
+        "content": "do you ship internationally"
+      },
+      {
+        "role": "assistant",
+        "content": "I am sorry, I am unable to search for that information right now. Please try again later."
+      },
+      {
+        "role": "user",
+        "content": "do you ship internationally\n\n"
+      },
+      {
+        "role": "assistant",
+        "content": "\u274c Error connecting to API: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7e69ac0ee2b0>: Failed to establish a new connection: [Errno 111] Connection refused'))"
+      },
+      {
+        "role": "user",
+        "content": "do you ship internationally"
+      },
+      {
+        "role": "assistant",
+        "content": "I checked our knowledge base, but I couldn't find any information about international shipping. I recommend contacting our customer support team directly, as they would be the best resource for answering this question!"
+      },
+      {
+        "role": "user",
+        "content": "check again"
+      },
+      {
+        "role": "assistant",
+        "content": "\u274c Error connecting to API: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=30)"
+      },
+      {
+        "role": "user",
+        "content": "check last time"
+      },
+      {
+        "role": "assistant",
+        "content": "Could you please clarify what you mean by 'check last time'? Are you trying to check the status of your most recent order, or something else?"
+      },
+      {
+        "role": "user",
+        "content": "do you ship internationally\n\n"
+      },
+      {
+        "role": "assistant",
+        "content": "Currently we only ship within the United States."
+      },
+      {
+        "role": "user",
+        "content": "can i return electronic items"
+      },
+      {
+        "role": "assistant",
+        "content": "Yes, you can return electronic items, but there's a 14-day return window for electronics, and the items must be unused and in the original packaging. You have 14 days from the order date."
+      }
+    ],
+    "created_at": "2025-10-19 13:08",
+    "customer_email": "tina@example.com"
+  }
+}

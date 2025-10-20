@@ -1,0 +1,10 @@
+# requirements.txt
+fastapi
+uvicorn
+sqlalchemy
+langchain
+langchain-google-genai
+langgraph
+streamlit
+pydantic
+python-dotenv
