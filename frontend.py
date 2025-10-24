@@ -1,43 +1,39 @@
-# frontend.py
+# frontend.py - Add toggle button
+
 import streamlit as st
 import requests
 import uuid
 from datetime import datetime
-import json  # ← NEW
-import os  # ← NEW
+import json
+import os
 
 st.set_page_config(page_title="Order Support Chat", page_icon="🛍️", layout="wide")
 
-# API URL
 API_URL = "http://localhost:8000/chat"
 
-# ===== PERSISTENCE SETUP ===== ← NEW SECTION
-THREADS_FILE = "threads.json"  # ← NEW
+# ===== Persistence Setup =====
+THREADS_FILE = "threads.json"
 
 
-def save_threads():  # ← NEW FUNCTION
-    """Save threads to file"""
+def save_threads():
     with open(THREADS_FILE, 'w') as f:
         json.dump(st.session_state.threads, f, indent=2)
 
 
-def load_threads():  # ← NEW FUNCTION
-    """Load threads from file"""
+def load_threads():
     if os.path.exists(THREADS_FILE):
         with open(THREADS_FILE, 'r') as f:
             return json.load(f)
     return None
 
 
-# ===== Initialize Session State ===== ← MODIFIED SECTION
+# ===== Initialize Session State =====
 if "threads" not in st.session_state:
-    # Try to load saved threads ← NEW
-    loaded = load_threads()  # ← NEW
+    loaded = load_threads()
 
-    if loaded:  # ← NEW
-        st.session_state.threads = loaded  # ← NEW
-    else:  # ← NEW - Only create default if no saved data
-        # Dictionary to store all threads
+    if loaded:
+        st.session_state.threads = loaded
+    else:
         st.session_state.threads = {
             str(uuid.uuid4()): {
                 "name": "New Conversation",
@@ -48,14 +44,16 @@ if "threads" not in st.session_state:
         }
 
 if "active_thread_id" not in st.session_state:
-    # Set the first thread as active
     st.session_state.active_thread_id = list(st.session_state.threads.keys())[0]
+
+# ===== NEW: Initialize SQL toggle =====
+if "enable_sql_queries" not in st.session_state:
+    st.session_state.enable_sql_queries = False
 
 
 # ===== Helper Functions =====
 
 def create_new_thread():
-    """Create a new conversation thread"""
     new_thread_id = str(uuid.uuid4())
     st.session_state.threads[new_thread_id] = {
         "name": f"Conversation {len(st.session_state.threads) + 1}",
@@ -64,40 +62,35 @@ def create_new_thread():
         "customer_email": ""
     }
     st.session_state.active_thread_id = new_thread_id
-    save_threads()  # ← NEW - Save after creating thread
+    save_threads()
     st.rerun()
 
 
 def delete_thread(thread_id):
-    """Delete a conversation thread"""
     if len(st.session_state.threads) > 1:
         del st.session_state.threads[thread_id]
-        # Switch to another thread
         st.session_state.active_thread_id = list(st.session_state.threads.keys())[0]
-        save_threads()  # ← NEW - Save after deleting thread
+        save_threads()
         st.rerun()
 
 
 def switch_thread(thread_id):
-    """Switch to a different thread"""
     st.session_state.active_thread_id = thread_id
     st.rerun()
 
 
 def rename_thread(thread_id, new_name):
-    """Rename a thread"""
     st.session_state.threads[thread_id]["name"] = new_name
-    save_threads()  # ← NEW - Save after renaming
+    save_threads()
 
 
 # Get active thread
 active_thread = st.session_state.threads[st.session_state.active_thread_id]
 
-# ===== Sidebar: Thread Management =====
+# ===== Sidebar =====
 with st.sidebar:
     st.header("💬 Conversations")
 
-    # New conversation button
     if st.button("➕ New Conversation", use_container_width=True, type="primary"):
         create_new_thread()
 
@@ -107,12 +100,10 @@ with st.sidebar:
     for thread_id, thread_data in st.session_state.threads.items():
         is_active = thread_id == st.session_state.active_thread_id
 
-        # Create a container for each thread
         with st.container():
             col1, col2 = st.columns([4, 1])
 
             with col1:
-                # Thread button
                 if st.button(
                         f"{'🔵' if is_active else '⚪'} {thread_data['name'][:20]}",
                         key=f"thread_{thread_id}",
@@ -122,12 +113,10 @@ with st.sidebar:
                     switch_thread(thread_id)
 
             with col2:
-                # Delete button (only if more than 1 thread)
                 if len(st.session_state.threads) > 1:
                     if st.button("🗑️", key=f"del_{thread_id}"):
                         delete_thread(thread_id)
 
-            # Show message count and time
             if is_active:
                 st.caption(f"📝 {len(thread_data['messages'])} messages • {thread_data['created_at']}")
 
@@ -148,7 +137,30 @@ with st.sidebar:
     # Update thread's email
     if customer_email != active_thread["customer_email"]:
         st.session_state.threads[st.session_state.active_thread_id]["customer_email"] = customer_email
-        save_threads()  # ← NEW - Save when email changes
+        save_threads()
+
+    st.divider()
+
+    # ===== NEW: SQL QUERY TOGGLE =====
+    st.header("🔧 Features")
+
+    sql_enabled = st.toggle(
+        "💾 Chat with Your Data",
+        value=st.session_state.enable_sql_queries,
+        help="Enable database queries for analytics (e.g., 'How many returns are active?')"
+    )
+
+    if sql_enabled != st.session_state.enable_sql_queries:
+        st.session_state.enable_sql_queries = sql_enabled
+        st.rerun()
+
+    # Show feature status
+    if st.session_state.enable_sql_queries:
+        st.success("✅ SQL Queries Enabled")
+        st.caption("You can now ask analytical questions!")
+    else:
+        st.info("ℹ️ SQL Queries Disabled")
+        st.caption("Enable to ask database questions")
 
     st.divider()
     st.subheader("🧪 Test Emails")
@@ -174,21 +186,51 @@ with st.sidebar:
     st.caption(f"Thread ID: {st.session_state.active_thread_id[:8]}...")
 
 # ===== Main Chat Area =====
-st.title(f"🛍️ {active_thread['name']}")
+
+# Header with SQL status indicator
+col1, col2 = st.columns([3, 1])
+with col1:
+    st.title(f"🛍️ {active_thread['name']}")
+with col2:
+    if st.session_state.enable_sql_queries:
+        st.markdown("### 💾 SQL ON")
+
 st.caption("Ask me about your orders, returns, or order status!")
 
-# Display chat history for active thread
+# Display chat history
 for message in active_thread["messages"]:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+# ===== Show example queries when SQL is enabled =====
+if st.session_state.enable_sql_queries and len(active_thread["messages"]) == 0:
+    st.info("💾 **SQL Mode Active** - Try asking analytical questions!")
+
+    st.markdown("### 📊 Example Queries:")
+
+    example_queries = [
+        "How many return requests are active?",
+        "Which customer has placed the most orders?",
+        "What's the total revenue from all orders?",
+        "List all pending orders",
+        "Which product has been returned the most?",
+        "How many orders were delivered last week?"
+    ]
+
+    cols = st.columns(2)
+    for idx, query in enumerate(example_queries):
+        with cols[idx % 2]:
+            if st.button(f"💡 {query}", key=f"example_{idx}", use_container_width=True):
+                # Set the query as if user typed it
+                st.session_state.example_query = query
+
 # Chat input
 if prompt := st.chat_input("Type your message...", key=f"input_{st.session_state.active_thread_id}"):
 
-    if not customer_email:
+    if not customer_email and not st.session_state.enable_sql_queries:
         st.warning("⚠️ Please enter your email in the sidebar first!")
     else:
-        # Add user message to active thread
+        # Add user message
         active_thread["messages"].append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
@@ -202,7 +244,8 @@ if prompt := st.chat_input("Type your message...", key=f"input_{st.session_state
                         json={
                             "message": prompt,
                             "customer_email": customer_email,
-                            "session_id": st.session_state.active_thread_id  # Use thread ID as session ID
+                            "session_id": st.session_state.active_thread_id,
+                            "enable_sql_queries": st.session_state.enable_sql_queries  # ← SEND TOGGLE
                         },
                         timeout=30
                     )
@@ -218,34 +261,19 @@ if prompt := st.chat_input("Type your message...", key=f"input_{st.session_state
 
             st.markdown(response_text)
 
-        # Add assistant response to active thread
+        # Add assistant response
         active_thread["messages"].append({"role": "assistant", "content": response_text})
 
-        # Auto-rename first conversation based on first message
+        # Auto-rename
         if len(active_thread["messages"]) == 2 and active_thread["name"].startswith("New Conversation"):
-            # Use first few words of user's first message as thread name
             first_message = prompt[:30] + ("..." if len(prompt) > 30 else "")
             rename_thread(st.session_state.active_thread_id, first_message)
 
-        save_threads()  # ← NEW - Save after each message exchange
+        save_threads()
         st.rerun()
 
-# Show empty state if no messages
-if len(active_thread["messages"]) == 0:
-    st.info("👋 Start a conversation! Ask me about your orders.")
-
-    # Quick action buttons
-    st.markdown("### Quick Actions:")
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        if st.button("📦 Check Order Status"):
-            st.session_state.quick_action = "What's the status of my order?"
-
-    with col2:
-        if st.button("🔄 View My Orders"):
-            st.session_state.quick_action = "Show me all my orders"
-
-    with col3:
-        if st.button("↩️ Return Item"):
-            st.session_state.quick_action = "I want to return an item"
+# Handle example query clicks
+if "example_query" in st.session_state:
+    prompt = st.session_state.example_query
+    del st.session_state.example_query
+    st.rerun()

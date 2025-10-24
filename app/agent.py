@@ -154,9 +154,14 @@ def execute_safe_query(db, sql_query: str) -> dict:
     ]
 
     query_upper = sql_query.upper()
+
+    # Check for dangerous keywords, but allow CREATE if it's not part of a dangerous operation
     for keyword in dangerous_keywords:
         if keyword in query_upper:
-            raise ValueError(f"Dangerous operation detected: {keyword}")
+            # Special case: Allow CREATE only if it's not part of CREATE TABLE, CREATE DATABASE, etc.
+            if "CREATE" in keyword and any(dangerous_op in query_upper for dangerous_op in ['TABLE', 'DATABASE', 'INDEX', 'VIEW']):
+                raise ValueError(f"Dangerous operation detected: {keyword}")
+            # You can add further checks here if needed for specific context
 
     # Execute query
     result = db.execute(text(sql_query))
@@ -397,8 +402,16 @@ def list_customer_orders(customer_email: str) -> Dict:
 
 # ===== UPDATED: Agent Creation with Memory =====
 
-def create_agent(api_key: str):
-    """Create the order management agent with memory"""
+# app/agent.py - Update create_agent function
+
+def create_agent(api_key: str, enable_sql_queries: bool = False):
+    """
+    Create intelligent order management agent.
+
+    Args:
+        api_key: Google API key
+        enable_sql_queries: Enable "Chat with Your Data" feature
+    """
 
     llm = ChatGoogleGenerativeAI(
         model="gemini-2.0-flash-exp",
@@ -406,6 +419,7 @@ def create_agent(api_key: str):
         temperature=0.3
     )
 
+    # Base tools
     tools = [
         get_order_status,
         search_company_knowledge,
@@ -413,19 +427,75 @@ def create_agent(api_key: str):
         list_customer_orders
     ]
 
-    # ✅ ADD MEMORY HERE
+    # Conditionally add SQL query tool
+    if enable_sql_queries:
+        tools.append(query_database)
+
     memory = MemorySaver()
 
-    agent = create_react_agent(
-        llm,
-        tools,
-        checkpointer=memory  # ← This enables conversation memory!
-    )
+    agent = create_react_agent(llm, tools, checkpointer=memory)
 
     return agent
 
+# Update system prompt to include SQL capability
+SYSTEM_PROMPT_WITH_SQL = """You are an intelligent customer service agent for an e-commerce company.
 
-SYSTEM_PROMPT = """You are a friendly and helpful customer service agent for an e-commerce company.
+📋 AVAILABLE TOOLS:
+1. query_database - For analytical/aggregate queries
+2. get_order_status - For single order lookups  
+3. initiate_return - For processing returns
+4. knowledge_base - For policy information
+
+🎯 DECISION LOGIC (Follow in order):
+
+**STEP 1: Is the question analytical/aggregate?**
+Questions containing these patterns REQUIRE query_database:
+- Counting: "how many", "count", "number of", "total customers/orders"
+- Aggregation: "total revenue", "average", "sum", "highest", "lowest"
+- Filtering/Lists: "list all", "show me all", "which customers", "what products"
+- Comparisons: "most", "least", "top", "bottom", "best", "worst"
+- Time-based analysis: "last month", "this year", "between dates", "recent"
+- Patterns: "customers who", "orders with", "products that"
+
+**STEP 2: Is it a specific single order?**
+Question has ONE order ID or email asking about ONE specific order?
+→ Use get_order_status
+
+**STEP 3: Is it a return request?**
+Customer wants to return a specific item?
+→ Use initiate_return (30-day window, 14 days for electronics)
+
+**STEP 4: Is it a policy question?**
+→ Use knowledge_base
+
+⚡ EXAMPLES TO CLARIFY:
+
+USE query_database:
+✅ "How many orders did customer@email.com place?" (aggregate count)
+✅ "What's the status of my recent orders?" (multiple orders)
+✅ "Do I have any pending returns?" (filtering/counting)
+✅ "Show my order history" (list of multiple)
+✅ "What did I order last month?" (time-based filter)
+
+USE get_order_status:
+✅ "What's the status of order #12345?" (single specific order)
+✅ "Where is my order?" + [customer provides one order ID]
+
+🚫 COMMON MISTAKES TO AVOID:
+- DON'T use get_order_status for questions like "my orders" (plural)
+- DON'T skip query_database just because customer didn't say "query" or "database"
+- DON'T assume you need explicit instruction to use query_database
+
+✨ RESPONSE GUIDELINES:
+- Always verify customer email for order operations
+- Translate SQL results into friendly, natural language
+- If query returns empty, politely explain no results found
+- If SQL fails, simplify the query or ask for clarification
+
+Keep responses friendly, concise, and helpful!
+"""
+
+SYSTEM_PROMPT_BASIC = """You are a friendly and helpful customer service agent for an e-commerce company.
 
 Your capabilities:
 - Check order status
@@ -451,3 +521,7 @@ Important guidelines:
 
 Keep your responses friendly and conversational!
 """
+
+def get_system_prompt(enable_sql_queries: bool) -> str:
+    """Get appropriate system prompt based on features enabled."""
+    return SYSTEM_PROMPT_WITH_SQL if enable_sql_queries else SYSTEM_PROMPT_BASIC

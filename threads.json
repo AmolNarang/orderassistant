@@ -113,9 +113,318 @@
       {
         "role": "assistant",
         "content": "Yes, you can return electronic items, but there's a 14-day return window for electronics, and the items must be unused and in the original packaging. You have 14 days from the order date."
+      },
+      {
+        "role": "user",
+        "content": "Hey"
+      },
+      {
+        "role": "assistant",
+        "content": "Hi there! How can I help you today?"
+      },
+      {
+        "role": "user",
+        "content": "how are you"
+      },
+      {
+        "role": "assistant",
+        "content": "I'm doing great, thanks for asking! And how are you? Is there anything I can help you with today? Maybe you have a question about an order, or need help with a return?"
+      },
+      {
+        "role": "user",
+        "content": "do you ship internationally also?"
+      },
+      {
+        "role": "assistant",
+        "content": "Currently we only ship within the United States. Is there anything else I can help you with?"
+      },
+      {
+        "role": "user",
+        "content": "hey can tiy tekk How many return requests are active?"
+      },
+      {
+        "role": "assistant",
+        "content": "\u274c Error connecting to API: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=30)"
+      },
+      {
+        "role": "user",
+        "content": "can you check again"
+      },
+      {
+        "role": "assistant",
+        "content": "Could you please clarify what you would like me to check? For example, are you looking for the status of an order, or do you want to initiate a return? If it's about an order, please provide the order ID."
+      },
+      {
+        "role": "user",
+        "content": "how many returns are active"
+      },
+      {
+        "role": "assistant",
+        "content": "\u274c Error connecting to API: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=30)"
+      },
+      {
+        "role": "user",
+        "content": "can you tell me date of the return request and which order id"
+      },
+      {
+        "role": "assistant",
+        "content": "\u274c Error connecting to API: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=30)"
+      },
+      {
+        "role": "user",
+        "content": "can you tell me date of the return request and which order id"
+      },
+      {
+        "role": "assistant",
+        "content": "I do not have the ability to view the date of a return request. However, I can list your order history if you would like."
+      },
+      {
+        "role": "user",
+        "content": "can you tell me date of the return request and which order id"
+      },
+      {
+        "role": "assistant",
+        "content": "\u274c Error connecting to API: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=30)"
+      },
+      {
+        "role": "user",
+        "content": "can you tell me date of the return request and which order id"
+      },
+      {
+        "role": "assistant",
+        "content": "I am still unable to fulfill this request. I am unable to retrieve the date of the return request and the associated order ID. Please try again later."
+      },
+      {
+        "role": "user",
+        "content": "please check again"
+      },
+      {
+        "role": "assistant",
+        "content": "Could you please clarify what you would like me to check? For example, are you asking about an order status, a return, or something else? Please provide as much detail as possible so I can assist you."
+      },
+      {
+        "role": "user",
+        "content": "can you tell me date of the return request and which order id"
+      },
+      {
+        "role": "assistant",
+        "content": "I do not have the ability to search for return requests. However, I can list your orders if you provide your email address. Would you like me to do that? Then you can tell me which order you are referring to."
+      },
+      {
+        "role": "user",
+        "content": "can you tell me date of the return request and which order id"
+      },
+      {
+        "role": "assistant",
+        "content": "\u274c Error connecting to API: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=30)"
+      },
+      {
+        "role": "user",
+        "content": "can you tell me date of the return request and which order id"
+      },
+      {
+        "role": "assistant",
+        "content": "I cannot directly search for return requests or their dates. However, if you can provide the order ID associated with the return, I can check the order details and see if there's any information about the return request."
       }
     ],
     "created_at": "2025-10-19 13:08",
     "customer_email": "tina@example.com"
+  },
+  "6cfb13e3-8232-4f8f-a85c-cb55ec2decdf": {
+    "name": "Conversation 2",
+    "messages": [
+      {
+        "role": "user",
+        "content": "hi can you tell me date of the return request and which order id"
+      },
+      {
+        "role": "assistant",
+        "content": "I can help with that! However, I do not have the ability to get the date of a return request. I can find the order ID associated with your email address. Would you like me to do that?"
+      },
+      {
+        "role": "user",
+        "content": "How many return requests are active?"
+      },
+      {
+        "role": "assistant",
+        "content": "There is currently 1 active return request."
+      },
+      {
+        "role": "user",
+        "content": "can you tell me date return request created along with its orderid"
+      },
+      {
+        "role": "assistant",
+        "content": "I do not have the ability to get the date of a return request. I can find the order ID associated with your email address. Would you like me to do that?"
+      },
+      {
+        "role": "user",
+        "content": "just select the created date by querying database"
+      },
+      {
+        "role": "assistant",
+        "content": "The created date of the return request is 2025-10-19 07:26:56.603516."
+      },
+      {
+        "role": "user",
+        "content": "also tell order id of the return requests"
+      },
+      {
+        "role": "assistant",
+        "content": "The order ID for the return request is ORD001."
+      }
+    ],
+    "created_at": "2025-10-20 17:49",
+    "customer_email": "john@example.com"
+  },
+  "bc7f84d8-ad4b-4d1a-8791-6f50ff42df7d": {
+    "name": "Conversation 3",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hi"
+      },
+      {
+        "role": "assistant",
+        "content": "Hi there! How can I help you today?"
+      },
+      {
+        "role": "user",
+        "content": "can you tell me my status of order"
+      },
+      {
+        "role": "assistant",
+        "content": "To check the status of your order, I'll need the order ID. Could you please provide it?"
+      },
+      {
+        "role": "user",
+        "content": "please look into orders table in database using my customer id, get my customer id from customers table"
+      },
+      {
+        "role": "assistant",
+        "content": "I can definitely help with that. However, I need you to provide your customer ID so I can look up your order information. Alternatively, I can list all orders associated with your email address (an131998@gmail.com). Would you prefer that?"
+      },
+      {
+        "role": "user",
+        "content": "yes"
+      },
+      {
+        "role": "assistant",
+        "content": "OK, I found one order associated with your email address, an131998@gmail.com. The order ID is ORD004, placed on 2025-10-21. It includes 1 item, and the total is $39.99. The order status is currently \"pending.\""
+      },
+      {
+        "role": "user",
+        "content": "ok can you tell me all active returns"
+      },
+      {
+        "role": "assistant",
+        "content": "OK. I found one active return. The return ID is RET2321, associated with order ORD001 and product SKU001. The reason for return is \"Left speaker not working\" and the current status is \"pending\"."
+      },
+      {
+        "role": "user",
+        "content": "can you tell me when was the order return requested "
+      },
+      {
+        "role": "assistant",
+        "content": "I'm sorry, but I couldn't find any information about a return request for the email address provided."
+      },
+      {
+        "role": "user",
+        "content": "can you tell me all return requested date of RET2321"
+      },
+      {
+        "role": "assistant",
+        "content": "The return request RET2321 was created on 2025-10-19 07:26:56."
+      },
+      {
+        "role": "user",
+        "content": "what did i order you know"
+      },
+      {
+        "role": "assistant",
+        "content": "OK. I see one order in the system for you (an131998@gmail.com):\n\nOrder ID: ORD004\nOrder Date: 2025-10-21\nOrder Total: $39.99\nStatus: pending\n\nTo see the items in this order, I would need to run another query. Would you like me to do that?"
+      },
+      {
+        "role": "user",
+        "content": "yes"
+      },
+      {
+        "role": "assistant",
+        "content": "OK, order ORD004 contains one item, product SKU SKU008."
+      },
+      {
+        "role": "user",
+        "content": "whats this product SKU008"
+      },
+      {
+        "role": "assistant",
+        "content": "That is a Laptop Stand. Unfortunately, the product description is not available."
+      }
+    ],
+    "created_at": "2025-10-21 11:31",
+    "customer_email": "an131998@gmail.com"
+  },
+  "2deb537d-0224-459e-9320-befa48ec2529": {
+    "name": "Conversation 4",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hi"
+      },
+      {
+        "role": "assistant",
+        "content": "Hi there! How can I help you today?"
+      },
+      {
+        "role": "user",
+        "content": "can you check status of my order"
+      },
+      {
+        "role": "assistant",
+        "content": "Sure! To check your order status, I'll need the order ID. Could you please provide it?"
+      },
+      {
+        "role": "user",
+        "content": "you have my email get my order id"
+      },
+      {
+        "role": "assistant",
+        "content": "I see one order associated with your email address:\n\n*   **Order ID:** ORD005\n*   **Date:** 2025-10-22\n*   **Status:** pending\n*   **Total:** $79.99\n\nIs there anything else I can help you with regarding this order?"
+      },
+      {
+        "role": "user",
+        "content": "whats the order item"
+      },
+      {
+        "role": "assistant",
+        "content": "I do not have the ability to view the items in your order. I can only see the order ID, date, status, and total."
+      },
+      {
+        "role": "user",
+        "content": "what product i have ordered check order items"
+      },
+      {
+        "role": "assistant",
+        "content": "I am sorry, I do not have the ability to view the items in your order."
+      },
+      {
+        "role": "user",
+        "content": "what the order items in ORD005"
+      },
+      {
+        "role": "assistant",
+        "content": "I do not have the ability to view the items in your order. I can only see the order ID, date, status, and total."
+      },
+      {
+        "role": "user",
+        "content": "query the database for order items table"
+      },
+      {
+        "role": "assistant",
+        "content": "I am sorry, I do not have the ability to query the database for order items."
+      }
+    ],
+    "created_at": "2025-10-22 12:59",
+    "customer_email": "maheshlavande16400@gmail.com"
   }
 }

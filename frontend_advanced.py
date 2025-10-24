@@ -208,7 +208,7 @@ if prompt := st.chat_input("Ask about orders, returns, or shipping..."):
                             "customer_email": customer_email,
                             "session_id": st.session_state.active_thread_id
                         },
-                        timeout=30
+                        timeout=300
                     )
 
                     if response.status_code == 200:
